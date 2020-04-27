@@ -1,9 +1,7 @@
-//STARTS EVERYTHING
+//START THINGS
 function startPlay(song){
-	timecode = 0 / 16;
+	timecode = 0;
 	startTime = Date.now();
-	console.log("starting! "+	' | '+timecode);
-	console.log();
 	song.play();
 }
 

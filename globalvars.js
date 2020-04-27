@@ -5,6 +5,9 @@ const fileFormat = 'png'; //'jpg' or 'png'
 
 
 //vars
+let loopState;
+let initState;
+
 let bezzes = [];
 let growShrinkOn;
 let initMaxBezzes;
@@ -20,7 +23,8 @@ let writeRate;
 let scaleX;
 let scaleY;
 let clickCount = 0;
-let loopState = false;
+
+
 let growShrinkAmt;
 let bgColor;
 
