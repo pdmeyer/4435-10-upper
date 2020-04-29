@@ -11,6 +11,12 @@ function setup() {
 	
 	//config
 	writeSpeed = 10; //framerate
+
+	otTone = new DataStream(songData.otTone.EnergyMean);
+	outside = new DataStream(songData.outside.AC1Mean);
+	radiodrone = new DataStream(songData.radiodrone.FrequencyMean);
+	phonem = new DataStream(songData.phonem.EnergyMean);
+
 	rotateAmt = 0; 
 	linesPerWrite = 1;
 	growShrinkAmt = 1;
@@ -21,11 +27,6 @@ function setup() {
 	growShrinkOn = true; //use growing and shrinking form?
 	initBezzes = 1; //how many lines to start with
 	initMaxBezzes = 200; // how many lines to grow to
-
-	otTone = new DataStream(songData.otTone.EnergyMean);
-	outside = new DataStream(songData.outside.AC1Mean);
-	radiodrone = new DataStream(songData.radiodrone.FrequencyMean);
-	phonem = new DataStream(songData.phonem.EnergyMean);
 
 	//background initial
 	bgColor = {
@@ -154,7 +155,7 @@ function draw() {
 				// stroke(bez1.stroke.red,bez1.stroke.green,bez1.stroke.blue,bez1.stroke.alpha + Math.round(data2.modulator(timecode,0.75,0,0,105)));
 				// fill(bez1.fill.red,bez1.fill.green,bez1.fill.blue,map(mouseX,0,width,0,1));
 	
-	
+			//lines
 			writeLines(frameCount-2, maxBezzes,0,0);
 			pop();
 	
@@ -164,13 +165,12 @@ function draw() {
 			};
 		};
 			
-		loopState = true;
-	
 		if (timecode >= 	data1.stream.length - 7*(1000/writeSpeed)) {
 			console.log(timecode); 
 			startPlay(song);
 		 };
 	
 		console.log(millisToTime(mills)+' | '+timecode+' | '+Math.floor(100 * timecode / data1.stream.length)+'%' );
+		
 	}	
 }
