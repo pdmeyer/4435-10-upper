@@ -31,4 +31,7 @@ let bgColor;
 
 //JSON data
 let songData;
-let data1;
+let otTone;
+let phonem;
+let outside;
+let radiodrone;

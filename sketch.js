@@ -1,10 +1,9 @@
 //SETUP
 function preload() {
-	songData = loadJSON('data/bergintro_means.json');
+	songData = loadJSON('data/covid_means.json');
 	
 	soundFormats('mp3');
-	song = loadSound('audio/1 berg intro MIX 1.0');
-	//stem = loadSound('audio/berg_intro_1_razor',startPlay);
+	song = loadSound('audio/5 covid MIX 2.0');
 }
 
 function setup() {
@@ -23,8 +22,10 @@ function setup() {
 	initBezzes = 1; //how many lines to start with
 	initMaxBezzes = 200; // how many lines to grow to
 
-	data1 = new DataStream(songData.razor.LoudnessMean);
-	data2 = new DataStream(songData.udu.LoudnessMean);
+	otTone = new DataStream(songData.otTone.EnergyMean);
+	outside = new DataStream(songData.outside.AC1Mean);
+	radiodrone = new DataStream(songData.radiodrone.FrequencyMean);
+	phonem = new DataStream(songData.phonem.EnergyMean);
 
 	//background initial
 	bgColor = {
