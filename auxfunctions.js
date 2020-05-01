@@ -1,7 +1,7 @@
 //START THINGS
 function startPlay(song){
 	timecode = 0;
-	startTime = Date.now();
+	startTime = performance.now();
 	song.play();
 }
 

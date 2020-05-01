@@ -84,7 +84,7 @@ function setup() {
 function draw() {
 	if(!initState) {
 		let ii = millis() * writeSpeed/60; //
-		mills = Date.now() - startTime;
+		mills = performance.now() - startTime;
 		timecode = Math.ceil(mills/16); //sync song to visual
 		let easing = 0.03;
 	
