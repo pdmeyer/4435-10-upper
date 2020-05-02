@@ -64,14 +64,12 @@ function setup() {
 			}
 		}
 
-	//intitializations
+	//initializations
 	loopState = false;
 	initState = true;
 	maxBezzes = initMaxBezzes;
 	frameRate(writeSpeed);
 	angleMode(DEGREES);
-	mouseDownX = 0;
-	mouseDownY = 0;
 	mouseX = width / 2;
 	mouseY = height / 2;	
 	ellipseX = mouseX;
@@ -89,41 +87,10 @@ function draw() {
 		let easing = 0.03;
 	
 		//modulations
-			//shape	
-			//bez1.vert.x1 += 0.85 * sin_(ii,10);
-			
-			bez1.vert.x1 = followPointer('x', bez1.vert.x1, easing); 
-			bez1.vert.y1 = followPointer('y', bez1.vert.y1, easing); 
-	
-			bez1.vert.cpx1 += 11 * vect_(ii, 105).y;
-			bez1.vert.cpy1 += 1.3 * sin_(ii,45);
-			bez1.vert.cpy2 += 1.3 * sin_(ii,52);
-			bez1.vert.cpy1 += 7.6 * vect_(ii, 300).y;
-			bez1.vert.cpx2 += 10 * vect_(ii, 400).y;
-			bez1.vert.cpy1 += 4.2 * vect_(ii, 500).x;
-			bez1.vert.x2 += -0.5 * sin_(ii,1000)
-	
-			//line color
-			
-			//fill color
-			bez1.fill.alpha = 10 * sin_(ii,1000);
-			// bez1.fill.red = bez1.fill.red + map(mouseY,height,0,0,100);
-			// bez1.fill.green = bez1.fill.green + map(mouseY,height,0,0,10);
-	
-			//position
-			//gXPos = 
-			//gYPos = 
-			//rotateAmt = /*lerp(rotateAmt, Math.round(10 * Math.random()), 0.05)*/ + data2.modulator(timecode,0.8,0,0,10);
-	
-			//trail
-			//maxBezzes = round(map(mouseX,0,width,1,500));
-	
-			//background
-			bgColor.red = lerp(bgColor.red,69 + data1.modulator(timecode,0.8,0,0,60),0.5);
-	
-			//ellipse
-			ellipseX = followPointer('x',ellipseX,easing*5);
-			ellipseY = followPointer('y',ellipseY,easing*5);
+
+		//pointer circle position
+		ellipseX = followPointer('x',ellipseX,easing*5);
+		ellipseY = followPointer('y',ellipseY,easing*5);
 		
 		//create bez objects
 		bezzes.push(new Bez(bez1));	
