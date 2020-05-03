@@ -47,3 +47,39 @@ function writeLines (framecount, maxbezzes,strkOr=0,fillOr=0) {
   }
 }
 
+
+
+class ShadowForm {
+  constructor(x1,y1,x2,y2,x3,y3,x4,y4,x5,y5,x6,y6) {
+    this.x1= x1;
+    this.y1= y1;
+    this.x2= x2;
+    this.y2= y2;
+    this.x3= x3;
+    this.y3= y3;
+    this.x4= x4;
+    this.y4= y4;
+    this.x5= x5;
+    this.y5= y5;
+    this.x6= x6;
+    this.y6= y6;
+  }
+
+  show (number) {
+    for (let i=0; i < number; i++) {
+      // ellipse(width/2, height/2, 500-(5*i), 500-(5*i));
+      scale(1-i/number,1-i/number);
+      beginShape();
+      curveVertex(this.x1,this.y1);
+      curveVertex(this.x2,this.y2);
+      curveVertex(this.x3,this.y3);
+      curveVertex(this.x4,this.y4);
+      curveVertex(this.x1,this.y1);
+      curveVertex(this.x5,this.y5);
+      curveVertex(this.x6,this.y6);
+      curveVertex(this.x2,this.y2);
+      curveVertex(this.x2,this.y2);
+      endShape();
+    }
+  }
+}

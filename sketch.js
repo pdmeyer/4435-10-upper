@@ -10,12 +10,13 @@ function setup() {
 	c = createCanvas(windowWidth, windowHeight);	
 	
 	//config
-	writeSpeed = 10; //framerate
+	writeSpeed = 24; //framerate
 
-	otTone = new DataStream(songData.otTone.EnergyMean);
-	outside = new DataStream(songData.outside.AC1Mean);
-	radiodrone = new DataStream(songData.radiodrone.FrequencyMean);
-	phonem = new DataStream(songData.phonem.EnergyMean);
+	otTone = new DataStream(songData.otTone.EnergyMean,1);
+	outAC1 = new DataStream(songData.outside.AC1Mean,1);
+	outEner = new DataStream(songData.outside.EnergyMean,1);
+	radiodrone = new DataStream(songData.radiodrone.FrequencyMean,1);
+	phonem = new DataStream(songData.phonem.EnergyMean,1);
 
 	rotateAmt = 0; 
 	linesPerWrite = 1;
@@ -30,10 +31,10 @@ function setup() {
 
 	//background initial
 	bgColor = {
-		red: 50,
-		green: 83,
-		blue: 41,
-		alpha: 255
+		red: 100,
+		green: 105,
+		blue: 112,
+		alpha: 123,
 	}
 
 	//bezier initial values
@@ -65,6 +66,7 @@ function setup() {
 		}
 
 	//initializations
+	pixelDensity(1);
 	loopState = false;
 	initState = true;
 	maxBezzes = initMaxBezzes;
@@ -74,70 +76,59 @@ function setup() {
 	mouseY = height / 2;	
 	ellipseX = mouseX;
 	ellipseY = mouseY;
+	ii = millis() * writeSpeed/60; //
 
 	noLoop();
+
+	shadow1 = new ShadowForm(0,0,400,198,165,314,-114,269,194,-15,376,114);
+	//c.background(bgColor.red, bgColor.green, bgColor.blue, bgColor.alpha);
+
+	background(0);
 }
+
 
 //DRAW
 function draw() {
+	loadPixels();
+  for(x = 0; x < width; x++) {
+    for(y = 0; y < height; y++) {
+    let pR = (x + y * width) * 4;
+    let pG = pR + 1;
+    let pB = pR + 2
+		let pA = pR + 3;
+    
+    pixels[pR] = bgColor.red;
+    pixels[pG] = bgColor.green;
+		pixels[pB] = bgColor.blue+randomGaussian(-40,200);
+		pixels[pA] = randomGaussian(-50,50)+sin_(x/10,sin_(x+frameCount,1,0.0001,0.01),56,200);
+		//pixels[pA] = outEner.modulator(y/outEner.stream.length,0,0,0,255);
+		}
+	}
+  updatePixels();	
+
 	if(!initState) {
-		let ii = millis() * writeSpeed/60; //
 		mills = performance.now() - startTime;
 		timecode = Math.ceil(mills/16); //sync song to visual
-		let easing = 0.03;
-	
-		//modulations
-
-		//pointer circle position
-		ellipseX = followPointer('x',ellipseX,easing*5);
-		ellipseY = followPointer('y',ellipseY,easing*5);
-		
-		//create bez objects
-		bezzes.push(new Bez(bez1));	
-			if(bezzes.length > 1001) { 
-				let d = bezzes.length - 1001;
-				for(i=0; i<d; i++) {
-					bezzes.shift();
-				} 
-			};
 	
 		//drawing
 		if(frameCount % linesPerWrite == 0) {
-			//c.clear(); //transparent background
-			c.background(bgColor.red, bgColor.green, bgColor.blue, bgColor.alpha); //
 			
-			//pointer circle
+			noStroke();
 			push();
-				noStroke();
-				fill(150);
-				ellipse(ellipseX, ellipseY, 10, 10);
+			translate(width*0.5,height*0.5);
+			// rotate(frameCount % 360);
+			shearX(sin_(ii,10,-50,50));
 			pop();
-			push();
-				//translate((x2-x1)/2,0)
-				shearX(rotateAmt); // does this work? 
-			
-			scale(scaleX,scaleY);
-	
-			//more modulations
-				// stroke(bez1.stroke.red,bez1.stroke.green,bez1.stroke.blue,bez1.stroke.alpha + Math.round(data2.modulator(timecode,0.75,0,0,105)));
-				// fill(bez1.fill.red,bez1.fill.green,bez1.fill.blue,map(mouseX,0,width,0,1));
-	
-			//lines
-			writeLines(frameCount-2, maxBezzes,0,0);
-			pop();
-	
-			// grow/shrink
-			if(growShrinkOn) {
-				growShrink(initMaxBezzes);
+			fill(150,150,outAC1.modulator(timecode,0,0,140,160),outEner.modulator(timecode,0,0,1,10));
+			translate(-width*0.25,-height*0.3);
+			shadow1.show(250);
+				
+			if (timecode >= 	otTone.stream.length - 7*(1000/writeSpeed)) {
+				console.log(timecode); 
+				startPlay(song);
 			};
-		};
-			
-		if (timecode >= 	data1.stream.length - 7*(1000/writeSpeed)) {
-			console.log(timecode); 
-			startPlay(song);
-		 };
 	
-		console.log(millisToTime(mills)+' | '+timecode+' | '+Math.floor(100 * timecode / data1.stream.length)+'%' );
-		
+		//if(showTimeCode) console.log(millisToTime(mills)+' | '+timecode+' | '+Math.floor(100 * timecode / otTone.stream.length)+'%' );
+		}
 	}	
 }
