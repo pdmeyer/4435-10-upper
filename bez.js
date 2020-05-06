@@ -1,5 +1,4 @@
-  
-  // main bezier curve object
+
   class Bez {
     constructor(obj) {
       this.x1 = obj.vert.x1;

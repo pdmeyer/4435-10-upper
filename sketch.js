@@ -78,33 +78,34 @@ function setup() {
 	ellipseY = mouseY;
 	ii = millis() * writeSpeed/60; //
 
-	noLoop();
+	// noLoop();
 
 	shadow1 = new ShadowForm(0,0,400,198,165,314,-114,269,194,-15,376,114);
 	//c.background(bgColor.red, bgColor.green, bgColor.blue, bgColor.alpha);
 
-	background(0);
+
 }
 
 
 //DRAW
 function draw() {
-	loadPixels();
-  for(x = 0; x < width; x++) {
-    for(y = 0; y < height; y++) {
-    let pR = (x + y * width) * 4;
-    let pG = pR + 1;
-    let pB = pR + 2
-		let pA = pR + 3;
+		background(0);
+// 	loadPixels();
+//   for(x = 0; x < width; x++) {
+//     for(y = 0; y < height; y++) {
+//     let pR = (x + y * width) * 4;
+//     let pG = pR + 1;
+//     let pB = pR + 2
+// 		let pA = pR + 3;
     
-    pixels[pR] = bgColor.red;
-    pixels[pG] = bgColor.green;
-		pixels[pB] = bgColor.blue+randomGaussian(-40,200);
-		pixels[pA] = randomGaussian(-50,50)+sin_(x/10,sin_(x+frameCount,1,0.0001,0.01),56,200);
-		//pixels[pA] = outEner.modulator(y/outEner.stream.length,0,0,0,255);
-		}
-	}
-  updatePixels();	
+//     pixels[pR] = bgColor.red;
+//     pixels[pG] = bgColor.green;
+// 		pixels[pB] = bgColor.blue+randomGaussian(-40,200);
+// 		pixels[pA] = randomGaussian(-50,50)+sin_(x/10,sin_(x+frameCount,1,0.0001,0.01),56,200);
+// 		//pixels[pA] = outEner.modulator(y/outEner.stream.length,0,0,0,255);
+// 		}
+// 	}
+//   updatePixels();	
 
 	if(!initState) {
 		mills = performance.now() - startTime;
@@ -114,13 +115,12 @@ function draw() {
 		if(frameCount % linesPerWrite == 0) {
 			
 			noStroke();
-			push();
 			translate(width*0.5,height*0.5);
+			//
 			// rotate(frameCount % 360);
 			shearX(sin_(ii,10,-50,50));
-			pop();
 			fill(150,150,outAC1.modulator(timecode,0,0,140,160),outEner.modulator(timecode,0,0,1,10));
-			translate(-width*0.25,-height*0.3);
+			
 			shadow1.show(250);
 				
 			if (timecode >= 	otTone.stream.length - 7*(1000/writeSpeed)) {
