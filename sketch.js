@@ -25,27 +25,20 @@ function setup() {
 	angleMode(DEGREES);
 	mouseX = width / 2;
 	mouseY = height / 2;	
-	ii = millis() * writeSpeed/60; //
-	let w = 100 * width;
-
+	ii = millis() * writeSpeed/60;
+	
 	// ShadowForm(vertices, magbase, magrange, perlinc, ctrlscl)
-	//shadow1 = new ShadowForm(3,50,250,1,1.5);
-	shadow1 = new ShadowForm(3,250,50,1,1.7);
+	noiseDetail();
+	shadow1 = new ShadowForm(3,50,100,1,1.7);
 	shadow1.create();
 
-	translate(width/2,height/2);
-	noiseDetail(25,0.9);
 	
-	strokeWeight(1);
-	stroke(255,255,255);
-	fill(255,255,255,0);
-	
-	shadow1.update(200);
+
 }
 
 //DRAW
 function draw() {
-	// background(150);
+	background(150);
 	if(!initState) {
 		//mills = performance.now() - startTime;
 		//timecode = Math.ceil(mills/16); //sync song to visual
@@ -53,7 +46,17 @@ function draw() {
 		//drawing
 		strokeWeight(4);
 		stroke(255,0,0);
-		shadow1.updateVPoints();
+
+
+		noiseDetail(10,0.6);  //THIS IS HAVING SOME SORT OF INFLUENCE I DON'T UNDERSTAND
+		translate(width/2,height/2);
+		
+		
+		strokeWeight(1);
+		stroke(255,255,255);
+		fill(255,255,255,0);
+		
+		shadow1.update(20);
 		
 			
 		// if (timecode >= 	otTone.stream.length - 7*(1000/writeSpeed)) {
