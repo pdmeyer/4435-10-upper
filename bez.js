@@ -49,10 +49,11 @@ function writeLines (framecount, maxbezzes,strkOr=0,fillOr=0) {
 
 
 class ShadowForm {
-  constructor(vertices, magbase, magrange, perlinc, ctrlscl) { //a1,a2,a3,a4,a5,m1,m2,m3,m4,m5
+  constructor(vertices, magbase, magrange, perlinc, ctrlscl) {
     this.spacing = TWO_PI / vertices;
     this.vertices = [];
-    this.controls = []
+    this.controls = [];
+    this.controls2 = [];
     this.magrange = magrange;
     this.magbase = magbase;
     this.perlinc = perlinc;
@@ -73,7 +74,7 @@ class ShadowForm {
     }
     console.log('vertices: '+this.vertices);
 
-    //control points
+    //control points 1
     xoff = 50;
     for(let a = 0; a < this.vertices.length; a++) {
       let angle = this.vertices[a].heading() - (2 * noise(xoff)) * this.spacing/2;
@@ -82,18 +83,15 @@ class ShadowForm {
       this.controls.push(control);
       xoff += this.perlinc
     }
-  }
-
-  get angles () {
-    let angles = {
-      vertices: [],
-      controls: []
+    //control points 2
+    xoff = 900;
+    for(let a = 0; a < this.vertices.length; a++) {
+      let angle = this.vertices[a].heading() - (2 * noise(xoff)) * this.spacing/2;
+      let mag = this.vertices[a].mag() * this.ctrlscl * (noise(xoff) + 1);
+      let control = p5.Vector.fromAngle(angle,mag)
+      this.controls2.push(control);
+      xoff += this.perlinc
     }
-    for (let i = 0; i < this.vertices.length; i++) {
-      angles.vertices.push(this.vertices[i].heading());
-      angles.controls.push(this.controls[i].heading());
-    }
-    return angles;
   }
 
   updateVPoints () {
@@ -122,42 +120,42 @@ class ShadowForm {
         if(i == 0) {
           vertex(this.vertices[0].x, this.vertices[0].y)
         } else if (i == this.vertices.length) {
-          quadraticVertex(this.controls[0].x, this.controls[0].y, this.vertices[0].x, this.vertices[0].y);
+          bezierVertex(this.controls[0].x, this.controls[0].y, this.controls2[0].x, this.controls2[0].y, this.vertices[0].x, this.vertices[0].y);
         } else {
-          quadraticVertex(this.controls[i].x, this.controls[i].y, this.vertices[i].x, this.vertices[i].y);
+          bezierVertex(this.controls[i].x, this.controls[i].y, this.controls2[i].x, this.controls2[i].y, this.vertices[i].x, this.vertices[i].y);
         }
       }
       endShape();
       xoff += this.perlinc;
       yoff += this.perlinc;
     }
+  }
 
-    
-    // for (let i=0; i < number; i++) {
-    //   // ellipse(width/2, height/2, 500-(5*i), 500-(5*i));
+  get angles () {
+    let angles = {
+      vertices: [],
+      controls: [],
+      controls2: []
+    }
+    for (let i = 0; i < this.vertices.length; i++) {
+      angles.vertices.push(this.vertices[i].heading());
+      angles.controls.push(this.controls[i].heading());
+      angles.controls2.push(this.controls[i].heading());
+    }
+    return angles;
+  }
 
-    //   beginShape();
-    //   vertex(this.pos.v1.x,this.pos.v1.y);
-    //   quadraticVertex(this.pos.v2c.x,this.pos.v2c.y,this.pos.v2.x,this.pos.v2.y);
-    //   quadraticVertex(this.pos.v3c.x,this.pos.v3c.y,this.pos.v3.x,this.pos.v3.y);
-    //   quadraticVertex(this.pos.v4c.x,this.pos.v4c.y,this.pos.v4.x,this.pos.v4.y);
-    //   quadraticVertex(this.pos.v1c.x,this.pos.v1c.y,this.pos.v1.x,this.pos.v1.y);
-
-    // }
-    // push();
-    // noStroke();
-    // fill(255,0,0);
-    // // text("1",this.pos.v1.x,this.pos.v1.y);
-    // // text("1c",this.pos.v1c.x,this.pos.v1c.y);
-    // // text("2",this.pos.v2.x,this.pos.v2.y);
-    // // text("2c",this.pos.v2c.x,this.pos.v2c.y);
-    // // text("3",this.pos.v3.x,this.pos.v3.y);
-    // // text("3c",this.pos.v3c.x,this.pos.v3c.y);
-    // // text("4",this.pos.v4.x,this.pos.v4.y);
-    // // text("4c",this.pos.v4c.x,this.pos.v4c.y);
-    // //text("5",this.pos.v5.x,this.pos.v5.y);
-    // // text("6",this.pos.v6.x,this.pos.v6.y);
-    // // text("7",this.pos.v7.x,this.pos.v7.y);
-    // pop();
+  get mags() {
+    let mags = {
+      vertices: [],
+      controls: [],
+      controls2: []
+    }
+    for (let i = 0; i < this.vertices.length; i++) {
+      angles.vertices.push(this.vertices[i].mag());
+      angles.controls.push(this.controls[i].mag());
+      angles.controls2.push(this.controls[i].mag());
+    }
+    return mags;
   }
 }
