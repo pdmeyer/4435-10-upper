@@ -10,7 +10,7 @@ function setup() {
 	background(150);
 	
 	//config
-	writeSpeed = 24; //framerate
+	writeSpeed = 10; //framerate
 
 	// otTone = new DataStream(songData.otTone.EnergyMean,1);
 	// outAC1 = new DataStream(songData.outside.AC1Mean,1);
@@ -27,9 +27,8 @@ function setup() {
 	mouseY = height / 2;	
 	ii = millis() * writeSpeed/60;
 	
-	// ShadowForm(vertices, magbase, magrange, perlinc, ctrlscl)
-	noiseDetail();
-	shadow1 = new ShadowForm(3,50,100,1,1.7);
+	// ShadowForm(vertices, magbase, magrange, octaves, falloff, perlinc, ctrlscl) {
+	shadow1 = new ShadowForm(3,200,50,4,0.5,0.01,1.2);
 	shadow1.create();
 
 	
@@ -38,6 +37,7 @@ function setup() {
 
 //DRAW
 function draw() {
+	
 	background(150);
 	if(!initState) {
 		//mills = performance.now() - startTime;
