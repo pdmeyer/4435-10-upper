@@ -2,6 +2,7 @@
 //global configs
 const sketchName = "linearConst2";
 const fileFormat = 'png'; //'jpg' or 'png'
+let showTimeCode = false;
 
 
 //vars
@@ -20,6 +21,7 @@ let bez1;
 
 
 let writeRate;
+let ii;
 let scaleX;
 let scaleY;
 let clickCount = 0;

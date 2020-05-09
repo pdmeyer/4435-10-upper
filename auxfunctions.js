@@ -66,12 +66,17 @@ function pointerMiddleBand(y) {
 
 
 //MODULATORS
-function sin_(i, speed = 100) { return sin(i/speed + PI / 2)}
+function sin_(i, speed = 100, low = -1, high = 1) { 
+	return map(sin(i / speed + PI / 2), -1, 1, low, high);
+}
 
-function vect_(i, speed = 1000) { return p5.Vector.fromAngle(i / speed, 1) }
+function vect_(i, speed = 1000, low = -1, high = 1) { 
+	this.x = map(p5.Vector.fromAngle(i / speed, 1).x, -1, 1, low, high);
+	this.y = map(p5.Vector.fromAngle(i / speed, 1).y, -1, 1, low, high);
+}
 
 function randomGate (f) {
-	if (Math.floor(random(f)) == 0) {return 1} else {return 0}
+	return Math.floor(f * Math.random()) == 0;
 }
 
 
@@ -83,9 +88,10 @@ function millisToTime(mills) {
 	return minutes.slice(-2)+':'+seconds.slice(-2);
 }
 
+
 class DataStream {
-	constructor (path) {	
-		this.stream_ = path.slice(2,path.length); // first two items in the array are weird
+	constructor (path,startpoint=0) {	
+		this.stream_ = path.slice(startpoint,path.length);
 	}
 
 	get stream() {
