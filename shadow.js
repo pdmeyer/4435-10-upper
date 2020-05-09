@@ -1,5 +1,5 @@
 class ShadowForm {
-  constructor(centerx, centery, vertices, magbase, magrange, octaves, falloff, perlinc, ctrlscl) {
+  constructor(vertices, magbase, magrange, octaves, falloff, perlinc, ctrlscl) {
     this.spacing = TWO_PI / vertices;
     this.vertices = [];
     this.controls = [];
@@ -10,7 +10,6 @@ class ShadowForm {
     this.ctrlscl = ctrlscl;
     this.octaves = octaves;
     this.falloff = falloff;
-    this.center = createVector(centerx,centery);
   }
 
   create (xoff) {
@@ -58,14 +57,18 @@ class ShadowForm {
   }
 
 
-  update (number) {
+  update (number, xoff, oct, falloff, inc) {
     // let xoff = 456;
     // let yoff = 7893;
     // for (let j = 0; j < number; j++) {
     //   let perlx = noise(xoff);
     //   let perly = noise(yoff);
     //   scale(1 - perlx / number, 1 - perly / number);
-    //   //scale(1 - j/number, 1 - j/number)
+    //   //scale(1 - j/number, 1 - j/number) 
+      noiseDetail(oct,falloff);
+      let perlx = noise(xoff);
+      let perly = noise(xoff+2349);
+      translate(map(perlx,0,1,-20,20), map(perly,0,1,-20,20));
       beginShape();
       for (let i = 0; i < this.vertices.length + 1; i++) {
         if(i == 0) {
@@ -75,6 +78,7 @@ class ShadowForm {
         } else {
           bezierVertex(this.controls[i].x, this.controls[i].y, this.controls2[i].x, this.controls2[i].y, this.vertices[i].x, this.vertices[i].y);
         }
+        xoff += inc;
       }
       endShape();
       // xoff += 1;
@@ -111,7 +115,7 @@ class ShadowForm {
   }
 }
 
-function writeLines (arr, framecount, maxlines) {
+function writeLines (arr, framecount, maxlines, xoff, oct, falloff, inc) {
   let startLine;
   let numLines;
   let len = arr.length;
@@ -128,6 +132,6 @@ function writeLines (arr, framecount, maxlines) {
   }
 
   for (let i = startLine; i < startLine + numLines; i++) {
-    arr[i].update(1);
+    arr[i].update(1, xoff, oct, falloff, inc);
   }
 }
