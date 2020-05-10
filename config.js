@@ -1,4 +1,4 @@
-//SHADOWFORM PARAMS
+//TUBE PARAMS
 
 // basic form
 const vertices = 3; // number of vertices
@@ -51,7 +51,8 @@ let ypos;
 let clickCount = 0;
 let loopState = false;
 let initState = true;
-let shadows = [];
+let tube = [];
+let shadow = [];
 let formOff = Math.floor(Math.random() * 10000); // modulation of the form shape
 let transOff = formOff + 639; // modulation of form position
 let posOff = transOff + 892;
