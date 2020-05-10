@@ -3,31 +3,36 @@ function startPlay(song){
 	timecode = 0;
 	startTime = performance.now();
 	song.play();
+	initState = false;
 }
 
 //DRAWING
-function maxBezInc(inc) {
-	maxBezzes += inc
-	//console.log(maxBezzes);
+function countLines (arr, maxlines, xoff, oct, falloff, inc) {
+  let lines = {};
+  let len = arr.length;
+  
+  if(len < maxlines) {
+    lines.end = len;
+    lines.start = 0;
+  } else if (len < maxlines) {
+    lines.end = len;
+    lines.start = 0;
+  } else {maxlines
+    lines.end = maxlines;
+    lines.start = len - maxlines;
+  }
+
+  return lines
 }
 
-function growShrink(max) {
-	maxBezzes += growShrinkAmt;
-	if(maxBezzes > max || maxBezzes < initBezzes) {
-		growShrinkAmt = -growShrinkAmt;
+function addToFormArray (array, itemToAdd, maxLen) {
+	array.push(itemToAdd);
+	if(array.length > maxLen) { 
+		for(i=0; i<array.length - maxLen; i++) {
+			array.shift();
+		}
 	}
 }
-
-function linesToDraw() {
-	if(frameCount < maxBezzes) {
-		return frameCount;
-	} else if (bezzes.length < maxBezzes) {
-		return bezzes.length;
-	} else {
-		return maxBezzes;
-	}
-}
-
 
 //IMAGE EXPORT
 function nameFile(){
@@ -35,14 +40,12 @@ function nameFile(){
 }
 
 function saveImg () {
-	if(pointerUpperLeft(mouseX,mouseY)) {
-		console.log(nameFile());
-		saveCanvas(c, nameFile(), fileFormat);
-		}
+	console.log(nameFile());
+	saveCanvas(c, nameFile(), fileFormat);
 }
 
 
-//MOUSE
+//INTERACTIONS
 function pointerUpperLeft(x,y) {
 	return x < 0.1 * width && y < 0.1 * height;
 }
@@ -62,6 +65,25 @@ function pointerBottom(y) {
 function pointerMiddleBand(y) {
 	return y > 0.9 * height && y > 0.1 * height;
 }
+
+function keyPressed () {
+	if(keyCode === 32) {
+    if (initState) {
+      startPlay(song);
+			initState = false;
+			loopState = true;
+    } else if(loopState) {
+			loopState = false;
+			noLoop();
+			song.pause();
+		} else {
+			loopState = true;
+			loop();
+			song.play();
+		}
+		return false
+	}
+}	
 
 
 

@@ -23,7 +23,6 @@ class ShadowForm {
       xoff += this.perlinc
     }
     
-
     //control points 1
     let cp1off = xoff + 50;
     for(let a = 0; a < this.vertices.length; a++) {
@@ -33,6 +32,7 @@ class ShadowForm {
       this.controls.push(control);
       cp1off += this.perlinc
     }
+
     //control points 2
     let cp2off = xoff + 900;
     for(let a = 0; a < this.vertices.length; a++) {
@@ -57,18 +57,15 @@ class ShadowForm {
   }
 
 
-  update (number, xoff, oct, falloff, inc) {
-    // let xoff = 456;
-    // let yoff = 7893;
-    // for (let j = 0; j < number; j++) {
-    //   let perlx = noise(xoff);
-    //   let perly = noise(yoff);
-    //   scale(1 - perlx / number, 1 - perly / number);
-    //   //scale(1 - j/number, 1 - j/number) 
+  update (xoff, pAmt, sAmt, oct, falloff, inc) {
       noiseDetail(oct,falloff);
-      let perlx = noise(xoff);
-      let perly = noise(xoff+2349);
-      translate(map(perlx,0,1,-20,20), map(perly,0,1,-20,20));
+      let perlx = map(noise(xoff),0,1,-pAmt,pAmt);
+      let perly = map(noise(xoff+2349),0,1,-pAmt,pAmt);
+      translate(perlx, perly);
+      let xx = sin_(xoff,69,-sAmt,sAmt);
+      let yy = sin_(xoff,27,-sAmt,sAmt);
+      translate(xx,yy);
+
       beginShape();
       for (let i = 0; i < this.vertices.length + 1; i++) {
         if(i == 0) {
@@ -81,9 +78,6 @@ class ShadowForm {
         xoff += inc;
       }
       endShape();
-      // xoff += 1;
-      // yoff += 1;
-    // }
   }
 
   get angles () {
@@ -112,26 +106,5 @@ class ShadowForm {
       angles.controls2.push(this.controls[i].mag());
     }
     return mags;
-  }
-}
-
-function writeLines (arr, framecount, maxlines, xoff, oct, falloff, inc) {
-  let startLine;
-  let numLines;
-  let len = arr.length;
-  
-  if(framecount < maxlines) {
-    numLines = framecount;
-    startLine = len - framecount;
-  } else if (len < maxlines) {
-    numLines = len;
-    startLine = 0;
-  } else {maxlines
-    numLines = maxlines;
-    startLine = len - maxlines;
-  }
-
-  for (let i = startLine; i < startLine + numLines; i++) {
-    arr[i].update(1, xoff, oct, falloff, inc);
   }
 }
