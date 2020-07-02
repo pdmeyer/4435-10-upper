@@ -6,32 +6,12 @@ function startPlay(song){
 	initState = false;
 }
 
-//DRAWING
-function countLines (arr, maxlines, xoff, oct, falloff, inc) {
-  let lines = {};
-  let len = arr.length;
-  
-  if(len < maxlines) {
-    lines.end = len;
-    lines.start = 0;
-  } else if (len < maxlines) {
-    lines.end = len;
-    lines.start = 0;
-  } else {maxlines
-    lines.end = maxlines;
-    lines.start = len - maxlines;
-  }
-
-  return lines
-}
-
-function addToFormArray (array, itemToAdd, maxLen) {
-	array.push(itemToAdd);
-	if(array.length > maxLen) { 
-		for(i=0; i<array.length - maxLen; i++) {
-			array.shift();
-		}
-	}
+function initialize(framerate) {
+	frameRate(writeSpeed);
+	mouseX = width / 2;
+	mouseY = height / 2;	
+	xpos = width / 2;
+	ypos = height / 2;
 }
 
 //IMAGE EXPORT
@@ -85,8 +65,6 @@ function keyPressed () {
 	}
 }	
 
-
-
 //MODULATORS
 function sin_(i, speed = 100, low = -1, high = 1) { 
 	return map(sin(i / speed + PI / 2), -1, 1, low, high);
@@ -109,7 +87,6 @@ function millisToTime(mills) {
 	let seconds = "0"+Math.floor((mills % 60000)/1000).toString(); 
 	return minutes.slice(-2)+':'+seconds.slice(-2);
 }
-
 
 class DataStream {
 	constructor (path,startpoint=0) {	

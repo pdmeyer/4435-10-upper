@@ -17,7 +17,7 @@ const formInc = 0.065; // perlin noise
 //start position of tube
 const posOct = 10;
 const posFall = 0.5;
-const posInc = 0.004;
+const posInc = 0.004; //0.004
 const posRange = 20;
 
 //direction of tube
@@ -51,8 +51,8 @@ let ypos;
 let clickCount = 0;
 let loopState = false;
 let initState = true;
-let tube = [];
-let shadow = [];
+let tube;
+let shadow;
 let formOff = Math.floor(Math.random() * 10000); // modulation of the form shape
 let transOff = formOff + 639; // modulation of form position
 let posOff = transOff + 892;
