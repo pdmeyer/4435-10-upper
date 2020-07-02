@@ -17,8 +17,8 @@ const formInc = 0.065; // perlin noise
 //start position of tube
 const posOct = 10;
 const posFall = 0.5;
-const posInc = 0.004; //0.004
-const posRange = 20;
+const posInc = 0.007; //0.004
+const posRange = 300;
 
 //direction of tube
 const transOct = 10; // perl oct
@@ -56,6 +56,7 @@ let shadow;
 let formOff = Math.floor(Math.random() * 10000); // modulation of the form shape
 let transOff = formOff + 639; // modulation of form position
 let posOff = transOff + 892;
+let rotamt = 0;
 
 //JSON data
 let songData;

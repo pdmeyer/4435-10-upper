@@ -32,9 +32,11 @@ function draw() { if(!initState) {
 	push();
 	noStroke();
 	fill(0,0,0,10);
-	shadow.centerP(posOct, posFall, posOff, posRange);
-	shadow.drawMany(100,1,1);
+	translate(width/2,height/2);
+	rotate(rotamt);
+	shadow.drawMany(1000,1,1);
 	pop();
+	rotamt += 0.01;
 
 	/* tube create */
 	let tubeform = new ShadowForm(vertices,magbase,magrange,vertOct,vertFall,vertInc,ctrlMagCoeff);
@@ -45,7 +47,8 @@ function draw() { if(!initState) {
 	strokeWeight(1);
 	stroke(255,255,255,50);
 	fill(255,255,255,2);
-	tube.centerP(posOct, posFall, posOff, posRange);
+	translate(width/2,height/2);
+	tube.centerP(posOct, posFall, posOff, posRange, frameCount/1000);
 	tube.drawP(transOff, transAmt, wiggleAmt, transOct, transFall, transInc);
 	
 	/* perl inc */

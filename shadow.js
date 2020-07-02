@@ -123,10 +123,11 @@ class Tube {
   
   createAll(){}
 
-  centerP (cenOct, cenFall, cenOff, cenRange) {
+  centerP (cenOct, cenFall, cenOff, cenRange, scale) {
     noiseDetail(cenOct, cenFall);
-    let posX = width / 2 + map(noise(cenOff), 0, 1, -cenRange, cenRange);
-	  let posY = height / 2 + map(noise(cenOff+232), 0, 1, cenRange , cenRange);
+    cenRange *= scale;
+    let posX = map(noise(cenOff), 0, 1, -cenRange, cenRange);
+	  let posY = map(noise(cenOff+232), 0, 1, cenRange , cenRange);
   	translate(posX, posY);
   }
   
