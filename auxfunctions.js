@@ -1,4 +1,4 @@
-//START THINGS
+//TIMING
 function startPlay(song){
 	timecode = 0;
 	startTime = performance.now();
@@ -14,6 +14,12 @@ function initialize(framerate) {
 	ypos = height / 2;
 }
 
+function gettime() {
+	mills = performance.now() - startTime;
+	timecode = Math.ceil(mills/16); //sync song to visual
+	ii = mills * writeSpeed/60;
+}
+
 //IMAGE EXPORT
 function nameFile(){
 	return 'sketch_'+year()+month()+day()+'_'+hour()+minute()+second()+clickCount;
@@ -24,26 +30,21 @@ function saveImg () {
 	saveCanvas(c, nameFile(), fileFormat);
 }
 
-
 //INTERACTIONS
-function pointerUpperLeft(x,y) {
-	return x < 0.1 * width && y < 0.1 * height;
-}
-
-function pointerUpperRight(x,y) {
-	return x > 0.9 * width && y < 0.1 * height;
-}
-
-function pointerLowerLeft(x,y) {
-	return x<0.1*width && y >0.9*height;
+function pointregion(x, y , region) { //possible regions: uleft, uright, lleft, right, bottom, top, middle
+	if(region == "uleft") {
+		return x < 0.1 * width && y < 0.1 * height;
+	} else if (region == "uright") {
+		return x > 0.9 * width && y < 0.1 * height;
+	} else if (region == "lleft") {
+		return x<0.1*width && y >0.9*height;
+	} else if (region == "bottom") {
+		return y > 0.9 * height;
+	} else if (region == "top") {
+		return y < 0.1 * height;
+	} else if (region == "middle") {
+		return y > 0.9 * height && y > 0.1 * height;
 	}
-
-function pointerBottom(y) {
-	return y > 0.9 * height;
-}	
-
-function pointerMiddleBand(y) {
-	return y > 0.9 * height && y > 0.1 * height;
 }
 
 function keyPressed () {
@@ -79,6 +80,12 @@ function randomGate (f) {
 	return Math.floor(f * Math.random()) == 0;
 }
 
+function bfg(i, mult, oct=4, flf=0.5, low = 0., high = 1.) {
+	xoff = i * mult;
+	noiseDetail(oct,flf);
+	return map(noise(xoff), 0., 1., low, high);
+}
+
 
 //JSON Data
 //allows time to be displayed in mm:ss format 
@@ -87,52 +94,6 @@ function millisToTime(mills) {
 	let seconds = "0"+Math.floor((mills % 60000)/1000).toString(); 
 	return minutes.slice(-2)+':'+seconds.slice(-2);
 }
-
-class DataStream {
-	constructor (path,startpoint=0) {	
-		this.stream_ = path.slice(startpoint,path.length);
-	}
-
-	get stream() {
-		return this.stream_;
-	}
-
-	get min () {
-		let bottom = 100000;
-		for(let i = 0; i < this.stream.length; i++) {
-			if(this.stream[i] < bottom) {
-				bottom = this.stream[i];
-			}
-		}
-		return bottom;
-	}
-	
-	get max () {
-		let top = -100000;
-		for(let i = 0; i < this.stream.length; i++) {
-			if(this.stream[i] > top) {
-				top = this.stream[i];
-			}
-		}
-		return top;
-	}
-
-	modulator (index,scalemin,scalemax,outputmin,outputmax) {
-		let inputmin = this.min + scalemin*(this.max - this.min);
-		let inputmax = this.max - scalemax*(this.max - this.min);
-		let value = map(this.stream[index],inputmin,inputmax,outputmin,outputmax); 
-		return this.clamp(value,outputmin,outputmax);// (num, a, b) => Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
-	}
-
-	gate (index,threshold) {
-		let value = map(this.stream[index], this.min, this.max, 0, 1);
-		return threshold < value 
-	}
-
-	clamp(num,low,high) {
-		return Math.max(Math.min(num, Math.max(low, high)), Math.min(low, high))
-	}
-}	
 
 //maps songData array max and minimum to useful range
 function mapStream (stream,streammin,streammax) {
@@ -159,4 +120,12 @@ function followPointer (axis, val, easing) {
 	} else {
 			'first argument must be x or y (string)'
 	}
+}
+
+function showimage() {
+	let ix1 = timecode;
+	let ix2 = ix1 + 2325;
+	img.resize(width, 0);
+	image(img, 0, 0, width, height, bfg(ix1, 0.0006, 3, 0.2, 0, img.width * submatx), bfg(ix2, 0.0006, 4, 0.5, 0, img.width * submatx), submatx * img.width, submatx * img.height);
+	// image(img, 0, 0, width, height, sin_(ii,17010,0,img.width*submatx), sin_(ii,21432,0,img.height*submatx), submatx * img.width, submatx * img.height);
 }

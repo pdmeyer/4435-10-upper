@@ -2,7 +2,7 @@
 	// click in upper left hand corner: download image
 	// click in upper right hand corner: toggle draw looping
 function mousePressed () {
-	if(pointerUpperLeft(mouseX,mouseY)) {
+	if(pointregion(mouseX,mouseY,"uleft")) {
 		saveImg();
 	}
 }

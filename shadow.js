@@ -165,9 +165,9 @@ class Tube {
         let o = 1 - (j * (1 / howmany));
         scale(o);
       }
-      if(rot) {
+      if(rot > 0) {
         let t = j * (TWO_PI /  howmany);
-        rotate(t);
+        rotate(t * rot);
       }
       for (let i = l.start; i < l.start + l.end; i++) {
         this.forms[i].drawShape();
