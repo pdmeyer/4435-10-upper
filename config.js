@@ -48,6 +48,7 @@ const shadinc = 1.9;
   // 'img/test-452.png' // 'img/test-644.png' // sidewalk741.png //'img/sidewalk741.png' // 'img/sidewalk660.png'
 const imgfile = 'img/test-452.png'; 
 const submatx = 0.5;
+const matxeasing = 0.02;
 
 
 /***********************************************************************/
@@ -82,6 +83,8 @@ let timecode = 0;
 let rotdisp;
 let img;
 let howmany = 0;
+let subx;
+let suby;
 
 
 //JSON data

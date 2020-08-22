@@ -122,10 +122,3 @@ function followPointer (axis, val, easing) {
 	}
 }
 
-function showimage() {
-	let ix1 = timecode;
-	let ix2 = ix1 + 2325;
-	img.resize(width, 0);
-	image(img, 0, 0, width, height, bfg(ix1, 0.0006, 3, 0.2, 0, img.width * submatx), bfg(ix2, 0.0006, 4, 0.5, 0, img.width * submatx), submatx * img.width, submatx * img.height);
-	// image(img, 0, 0, width, height, sin_(ii,17010,0,img.width*submatx), sin_(ii,21432,0,img.height*submatx), submatx * img.width, submatx * img.height);
-}
