@@ -22,11 +22,6 @@ function setup() {
 	let shadowform = new ShadowForm(shadvert,height * shadmb, height * shadmr,shadoct,shadflf,shadinc,shadscl);
 	shadowform.create(0);
 	shadow.addForm(shadowform);
-
-	
-	// subx = mouseX;
-	// suby = mouseY;
-	console.log(subx+" "+suby);
 }
 
 function draw() { 

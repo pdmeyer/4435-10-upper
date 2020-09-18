@@ -70,6 +70,7 @@ let xpos;
 let ypos;
 let clickCount = 0;
 let loopState = false;
+let init = true;
 let tube;
 let shadow;
 let formOff = Math.floor(Math.random() * 10000); // modulation of the form shape

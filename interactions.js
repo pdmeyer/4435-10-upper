@@ -2,10 +2,14 @@
 	// click in upper left hand corner: download image
 	// click in upper right hand corner: toggle draw looping
 function mousePressed () {
-	if(pointregion(mouseX,mouseY,"uleft")) {
+	if(init) {
+		init = false;
+		loopState = true;
+		startPlay(song);
+	} else if(pointregion(mouseX,mouseY,"uleft")) {
 		saveImg();
 	}
-}
+}	
 
 function keyPressed () {
 	if(keyCode === 32) {
