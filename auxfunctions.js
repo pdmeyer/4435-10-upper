@@ -30,42 +30,6 @@ function saveImg () {
 	saveCanvas(c, nameFile(), fileFormat);
 }
 
-//INTERACTIONS
-function pointregion(x, y , region) { //possible regions: uleft, uright, lleft, right, bottom, top, middle
-	if(region == "uleft") {
-		return x < 0.1 * width && y < 0.1 * height;
-	} else if (region == "uright") {
-		return x > 0.9 * width && y < 0.1 * height;
-	} else if (region == "lleft") {
-		return x<0.1*width && y >0.9*height;
-	} else if (region == "bottom") {
-		return y > 0.9 * height;
-	} else if (region == "top") {
-		return y < 0.1 * height;
-	} else if (region == "middle") {
-		return y > 0.9 * height && y > 0.1 * height;
-	}
-}
-
-function keyPressed () {
-	if(keyCode === 32) {
-    if (initState) {
-      startPlay(song);
-			initState = false;
-			loopState = true;
-    } else if(loopState) {
-			loopState = false;
-			noLoop();
-			song.pause();
-		} else {
-			loopState = true;
-			loop();
-			song.play();
-		}
-		return false
-	}
-}	
-
 //MODULATORS
 function sin_(i, speed = 100, low = -1, high = 1) { 
 	return map(sin(i / speed + PI / 2), -1, 1, low, high);
