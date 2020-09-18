@@ -1,6 +1,6 @@
 # covd-visual
 
-web piece for a forthcoming album on (inter-modal.com)
+web piece for a forthcoming album on Intermodal (http://inter-modal.com)
 
 music copyright philip meyer, 2020. 
 
