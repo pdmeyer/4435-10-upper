@@ -56,28 +56,34 @@ class ShadowForm {
     }
   }
 
+  drawP (xoff, pAmt, sAmt, oct, falloff, inc) {
+    noiseDetail(oct,falloff);
+    let perlx = map(noise(xoff),0,1,-pAmt,pAmt);
+    let perly = map(noise(xoff+2349),0,1,-pAmt,pAmt);
+    translate(perlx, perly);
+    let xx = sin_(xoff,69,-sAmt,sAmt);
+    let yy = sin_(xoff,27,-sAmt,sAmt);
+    translate(xx,yy);
+    xoff += inc;
+    this.drawShape();
+  }
 
-  update (xoff, pAmt, sAmt, oct, falloff, inc) {
-      noiseDetail(oct,falloff);
-      let perlx = map(noise(xoff),0,1,-pAmt,pAmt);
-      let perly = map(noise(xoff+2349),0,1,-pAmt,pAmt);
-      translate(perlx, perly);
-      let xx = sin_(xoff,69,-sAmt,sAmt);
-      let yy = sin_(xoff,27,-sAmt,sAmt);
-      translate(xx,yy);
+  drawShape() {
+    let v = this.vertices;
+    let c = this.controls;
+    let c2 = this.controls2;
 
-      beginShape();
-      for (let i = 0; i < this.vertices.length + 1; i++) {
-        if(i == 0) {
-          vertex(this.vertices[0].x, this.vertices[0].y)
-        } else if (i == this.vertices.length) {
-          bezierVertex(this.controls[0].x, this.controls[0].y, this.controls2[0].x, this.controls2[0].y, this.vertices[0].x, this.vertices[0].y);
-        } else {
-          bezierVertex(this.controls[i].x, this.controls[i].y, this.controls2[i].x, this.controls2[i].y, this.vertices[i].x, this.vertices[i].y);
-        }
-        xoff += inc;
+    beginShape();
+    for (let i = 0; i < v.length + 1; i++) {
+      if(i == 0) {
+        vertex(v[0].x, v[0].y)
+      } else if (i == v.length) {
+        bezierVertex(c[0].x, c[0].y, c2[0].x, c2[0].y, v[0].x, v[0].y);
+      } else {
+        bezierVertex(c[i].x, c[i].y, c2[i].x, c2[i].y, v[i].x, v[i].y);
       }
-      endShape();
+    }
+    endShape();
   }
 
   get angles () {
@@ -106,5 +112,81 @@ class ShadowForm {
       angles.controls2.push(this.controls[i].mag());
     }
     return mags;
+  }
+}
+
+class Tube {
+  constructor(maxlen) {
+    this.forms = [];
+    this.maxlines = maxlen;
+  }
+  
+  createAll(){}
+
+  centerP (cenOct, cenFall, cenOff, cenRange, scale) {
+    noiseDetail(cenOct, cenFall);
+    cenRange *= scale;
+    let posX = map(noise(cenOff), 0, 1, -cenRange, cenRange);
+	  let posY = map(noise(cenOff+232), 0, 1, cenRange , cenRange);
+  	translate(posX, posY);
+  }
+  
+  addForm (itemToAdd) {
+    let arr = this.forms;
+    let max = this.maxlines;
+    arr.push(itemToAdd);
+    if(arr.length > max) { 
+      for(let i = 0; i < arr.length - max; i++) {
+        arr.shift();
+      }
+    }
+  }
+
+  lines () {
+    let max = this.maxlines;
+    let len = this.forms.length;
+    let g = {};
+    
+    if(len <= max) {
+      g.end = len;
+      g.start = 0;
+    } else if (len > max) {
+      g.end = len;
+      g.start = len - max;
+    } 
+
+    return g;
+  }
+
+  drawMany(howmany,recede,rot){
+    let l = this.lines();
+    for(let j = 0; j < howmany; j++) {
+      if(recede) {
+        let o = 1 - (j * (1 / howmany));
+        scale(o);
+      }
+      if(rot > 0) {
+        let t = j * (TWO_PI /  howmany);
+        rotate(t * rot);
+      }
+      for (let i = l.start; i < l.start + l.end; i++) {
+        this.forms[i].drawShape();
+      }
+    }
+    
+  }
+
+  draw() {
+    let l = this.lines();
+    for (let i = l.start; i < l.start + l.end; i++) {
+      this.forms[i].drawShape();
+    }
+  }
+
+  drawP (tOff, tAmt, wAmt, tOct, tFall, tInc) {
+    let l = this.lines();
+    for (let i = l.start; i < l.start + l.end; i++) {
+      this.forms[i].drawP(tOff, tAmt, wAmt, tOct, tFall, tInc);
+    }
   }
 }
