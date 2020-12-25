@@ -29,16 +29,18 @@ class DataStream {
 
 	modulator (index,scalemin,scalemax,outputmin,outputmax, smoothing=1) {
 		let inputmin = this.min + scalemin*(this.max - this.min);
-    let inputmax = this.max - scalemax*(this.max - this.min);
-    if(smoothing < 1) smoothing = 1;
-    let sum = 0;
-    let avg = 0;
-    for (let i = 0; i < smoothing; i++) {
-      if(index-i >= 0) {
-        let value = map(this.stream[index-i],inputmin,inputmax,outputmin,outputmax);
-        sum += value;
-        avg = sum/(i+1);
-      }
+		let inputmax = this.max - scalemax*(this.max - this.min);
+		if(smoothing < 1) smoothing = 1;
+		let sum = 0;
+		let avg = 0;
+		for (let i = 0; i < smoothing; i++) {
+			if(index-i >= 0) {
+				let ix = index-i;
+				if (ix > this.stream.length) ix =this.stream.length;
+				let value = map(this.stream[index-i],inputmin,inputmax,outputmin,outputmax);
+				sum += value;
+				avg = sum/(i+1);
+		}
     }
 		return this.clamp(avg,outputmin,outputmax);// (num, a, b) => Math.max(Math.min(num, Math.max(a, b)), Math.min(a, b));
 	}

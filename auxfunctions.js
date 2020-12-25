@@ -1,13 +1,41 @@
-//TIMING
-function startPlay(song){
+//start at the beginning
+function startPlay(_song){
 	timecode = 0;
 	startTime = performance.now();
-	song.play();
+	_song.play();
+	loopState = true;
 	initState = false;
 }
 
+//pause playback
+function pausePlay(_song) {
+	pauseTime = performance.now();
+	if(debug) console.log("pausetime: "+pauseTime);
+	loopState = false;
+	_song.pause();
+}
+
+//resume playing after pause
+function resumePlay(_song) {
+	interval = performance.now() - pauseTime;
+	if(debug) console.log("interval: "+interval)
+	startTime = startTime + interval;
+	if(debug) console.log("starttime: "+startTime);
+	loopState = true;
+	_song.play();
+}
+
+//reset to beginning
+function reset() {
+	if(debug) console.log("reset");
+	song.stop();
+	loopState = false;
+	timecode = 0;
+	initState = true;
+}
+
 function initialize(framerate) {
-	frameRate(writeSpeed);
+	frameRate(framerate);
 	mouseX = width / 2;
 	mouseY = height / 2;	
 	xpos = width / 2;
@@ -18,6 +46,10 @@ function gettime() {
 	mills = performance.now() - startTime;
 	timecode = Math.ceil(mills/16); //sync song to visual
 	ii = mills * writeSpeed/60;
+}
+
+function logtime () {
+	console.log(millisToTime(mills)+' | '+timecode+' | '+Math.floor(100 * timecode / otTone.stream.length)+'%'+' | '+howmany);
 }
 
 //IMAGE EXPORT
