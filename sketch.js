@@ -1,20 +1,18 @@
 function preload() {
-	songData = loadJSON('data/covid_means.json');
+	songData = loadJSON('data/covid_trimmed.json');
 	soundFormats('mp3');
-	song = loadSound('audio/5 covid MIX 2.0');
+	song = createAudio('audio/05_covid MIX 2.0_M3_256.mp3');
 	img = loadImage(imgfile);
 }
 
 function setup() {
 	initialize(writeSpeed);
-	c = createCanvas(windowWidth, windowHeight);	
+	c = createCanvas(windowWidth, windowHeight);
+	song.onended(reset)	
 
-	//prep json data for querying
-	otTone = new DataStream(songData.otTone.EnergyMean,1);
-	outAC1 = new DataStream(songData.outside.AC1Mean,1);
-	outEner = new DataStream(songData.outside.EnergyMean,1);
-	radiodrone = new DataStream(songData.radiodrone.FrequencyMean,1);
-	phonem = new DataStream(songData.phonem.EnergyMean,1);
+	otTone = new DataStream(songData.otTone,1);
+	radiodrone = new DataStream(songData.radiodrone,1);
+	outside = new DataStream(songData.outside,1)
 
 	tube = new Tube(maxlines);
 	shadow = new Tube(1);
@@ -30,16 +28,15 @@ function draw() {
 	
 	if(loopState) {
 		gettime();
+
 		/* shadow */
 		push();
 		noStroke();
 		fill(shadowfill);
 		translate(width/2,height/2);
 		rotate(rotamt);
-		rotdisp = outAC1.modulator(timecode,0,0,0,0.8,40) + otTone.modulator(timecode,0,0,0,6,40);
-		
-		//shadow.drawMany(1000 ,1,rotdisp);
-		let howmany = Math.round(constrain(pow(timecode/5000,4),0,1)*numShadows);
+		rotdisp = outside.modulator(timecode,0,0,0,0.8,40) + otTone.modulator(timecode,0,0,0,6,40);
+		howmany = Math.round(constrain(pow(timecode/5000,4),0,1)*numShadows);
 		shadow.drawMany(howmany,1,rotdisp);
 		pop();
 		rotamt += rotinc * 10 / writeSpeed;
@@ -58,26 +55,18 @@ function draw() {
 		tube.centerP(posOct, posFall, posOff, posRange, frameCount/1000);
 		tube.drawP(transOff, transAmt, wiggleAmt, transOct, transFall, transInc);
 		pop();
-
-		/* tint */
-		// fill(200,70,0,10); //map(mouseY,0,height,50,0);
-		// noStroke();
-		// rect(0,0,width,height);
-
+		
 		/* perl inc */
 		formOff += formInc * 10 / writeSpeed;
 		transOff += transInc * 10 / writeSpeed;
 		posOff += posInc * 10 / writeSpeed;
 		
-		/* song end check */
-		if (timecode >= songLength - 10) {
-			console.log(timecode); 
-			startPlay(song);
-		};	
 	}
 		
 	/* debug */
-	if(showTimeCode) console.log(millisToTime(mills)+' | '+timecode+' | '+Math.floor(100 * timecode / otTone.stream.length)+'%'+' | '+howmany);
+	if(debug && frameCount % 20 == 0) {
+		logtime();
+	}
 }
 
 function imgsub() {
