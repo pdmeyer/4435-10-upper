@@ -45,11 +45,9 @@ const shadscl = 0.8;
 const shadinc = 1.9;
 
 //background
-  // 'img/test-452.png' // 'img/test-644.png' // sidewalk741.png //'img/sidewalk741.png' // 'img/sidewalk660.png'
-const imgfile = 'img/test-452.png'; 
+const imgfile = 'img/test-452_res.jpg'; 
 const submatx = 0.5;
 const matxeasing = 0.1;
-
 
 /***********************************************************************/
 
@@ -57,10 +55,10 @@ const matxeasing = 0.1;
 
 const writeSpeed = 50;
 const easing = 0.1; // for mouse pointer
-const showTimeCode = false;
-const songLength = 11374;
+// const songLength = 11374;
 const sketchName = "covd-visual";
 const fileFormat = 'png'; //'jpg' or 'png'
+const debug = false;
 
 /***********************************************************************/
 
@@ -70,7 +68,7 @@ let xpos;
 let ypos;
 let clickCount = 0;
 let loopState = false;
-let init = true;
+let initState = true;
 let tube;
 let shadow;
 let formOff = Math.floor(Math.random() * 10000); // modulation of the form shape
@@ -90,6 +88,6 @@ let suby;
 //JSON data
 let songData;
 let otTone;
-let phonem;
+// let phonem;
 let outside;
 let radiodrone;
