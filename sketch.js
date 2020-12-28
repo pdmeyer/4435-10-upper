@@ -59,15 +59,29 @@ function draw() {
 		/* perl inc */
 		formOff += formInc * 10 / writeSpeed;
 		transOff += transInc * 10 / writeSpeed;
-		posOff += posInc * 10 / writeSpeed;
-		
-	}
+		posOff += posInc * 10 / writeSpeed;	
+	} else {
+    playButton();
+  }
 		
 	/* debug */
 	if(debug && frameCount % 20 == 0) {
 		logtime();
 	}
 }
+
+function playButton() {
+  let centerX = width / 2;
+  let centerY = height / 2;
+  noStroke();
+  rectMode(CENTER)
+  fill(221, 218, 198);
+  rect(centerX, centerY, 110, 70, 5, 5, 5, 5);
+  fill(255, 255, 255);
+  let s = 20;
+  triangle(centerX + s, centerY, centerX - s, centerY + s, centerX - s, centerY - s);
+}
+
 
 function imgsub() {
 	img.resize(width, 0);
