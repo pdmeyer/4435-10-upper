@@ -45,7 +45,9 @@ const shadscl = 0.8;
 const shadinc = 1.9;
 
 //background
-const imgfile = 'img/test-452_res.jpg'; 
+const imgfile = 'test-452_res.jpg'; 
+const audiofile = '05_covid MIX 2.0_M3_256.mp3';
+const datafile = 'covid_trimmed.json';
 const submatx = 0.5;
 const matxeasing = 0.1;
 
