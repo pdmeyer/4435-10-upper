@@ -62,7 +62,8 @@ function draw() {
 	  posOff += posInc * 10 / writeSpeed;
   
 	} else {
-	  playButton();
+		playButton();
+		toggleLoop();
 	}
   
 	/* debug */
