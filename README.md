@@ -1,6 +1,10 @@
 # 4435-10-uper
 
-web piece for a forthcoming album on Intermodal (http://inter-modal.com)
+web piece for a forthcoming album Seven Spaces on Intermodal. 
+
+http://seven-spaces.net/
+
+view this piece: https://pdmeyer.github.io/4435-10-upper/
 
 music copyright philip meyer, 2020. 
 
